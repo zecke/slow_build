@@ -1,0 +1,21 @@
+load("@gazelle//:def.bzl", "gazelle")
+load("@rules_go//go:def.bzl", "nogo")
+
+# gazelle:prefix github.com/example/project
+gazelle(name = "gazelle")
+
+nogo(
+    name = "my_nogo",
+    vet = True,
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "config",
+    tools = [
+	    "@com_github_prometheus_prometheus//cmd/promtool",
+	    "@com_github_prometheus_alertmanager//cmd/amtool",
+    ],
+    outs = ["foo.yaml"],
+    cmd_bash = "echo bla > $@",
+)
